@@ -141,6 +141,66 @@ namespace Polynomial
         {
             // DO_NOT_EDIT_ANYTHING_ABOVE_THIS_LINE V
 
+            var degreeA = a.Degree();
+            var degreeB = b.Degree();
+            var degree = degreeA + degreeB;
+
+            var coefficients = new int[degree + 1];
+            var powers = new int[degree + 1];
+
+            var termA = a.Head; // 2x⁰
+
+
+            while (termA != null)
+            {
+                var termB = b.Head; // 1x²
+
+                while (termB != null)
+                {
+                    // termA * termB => 2x⁰ * 1x²
+                    var coefficientA = termA.Coefficient;
+                    var coefficientB = termB.Coefficient;
+                    var coefficientTotal = coefficientA * coefficientB;
+
+                    coefficients[termA.Power + termB.Power] += coefficientTotal;
+                    powers[termA.Power + termB.Power] = termA.Power + termB.Power;
+
+                    termB = termB.Next;
+                }
+
+                termA = termA.Next;
+            }
+
+
+            while (termA != null)
+            {
+                var termB = b.Head; // 1x²
+
+                while (termB != null)
+                {
+                    // termA * termB => 2x⁰ * 1x²
+                    var coefficientA = termA.Coefficient;
+                    var coefficientB = termB.Coefficient;
+                    var coefficientTotal = coefficientA * coefficientB;
+
+                    coefficients[termA.Power + termB.Power] += coefficientTotal;
+                    powers[termA.Power + termB.Power] = termA.Power + termB.Power;
+
+                    termB = termB.Next;
+                }
+
+                termA = termA.Next;
+            }
+
+            return new Polynomial(coefficients, powers);
+
+            // DO_NOT_EDIT_ANYTHING_BELOW_THIS_LINE A
+        }
+
+        public static Polynomial MultiplyRemoveZeroCoefficient(Polynomial a, Polynomial b)
+        {
+            // DO_NOT_EDIT_ANYTHING_ABOVE_THIS_LINE V
+
             var termA = a.Head; // 2x⁰
 
             // Find powers to exist in the result polynomial.
@@ -220,12 +280,24 @@ namespace Polynomial
             // DO_NOT_EDIT_ANYTHING_ABOVE_THIS_LINE V
 
             var term = Head;
+            Term previous = null;
 
             while (term != null)
             {
                 if (term.Coefficient == 0)
                 {
-                    
+                    if (previous == null)
+                    {
+                        Head = term.Next;
+                    }
+                    else
+                    {
+                        previous.Next = term.Next;
+                    }
+                }
+                else
+                {
+                    previous = term;
                 }
 
                 term = term.Next;
