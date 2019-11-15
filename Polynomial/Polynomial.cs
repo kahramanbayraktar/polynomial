@@ -303,6 +303,10 @@ namespace Polynomial
                 term = term.Next;
             }
 
+            // If all coefficients are 0, then return a zero polynomial.
+            if (Head == null)
+                Head = new Term(0, 0, null);
+
             // DO_NOT_EDIT_ANYTHING_BELOW_THIS_LINE A
         }
 
